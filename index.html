@@ -3,185 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QUASAR X | SYSTEM</title>
+    <title>QUASAR X | ECLIPSE SYSTEM</title>
     <style>
-        /* A24 / Brutalist 风格重置 */
+        /* 引入 Google Fonts - 更加电影感的字体 */
+        @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Inter:wght@300;600&display=swap');
+
         :root {
-            --bg-color: #050505;
-            --text-color: #e0e0e0;
-            --accent-color: #ff3333; /* 红色 - 类星体 */
-            --font-main: 'Courier New', Courier, monospace;
+            --bg-color: #000000;
+            --text-color: #ffffff;
+            --accent-red: #ff0000;
+            --font-display: 'Syncopate', sans-serif; /* 宽体科幻感 */
+            --font-body: 'Inter', sans-serif; /* 极简现代 */
         }
 
         body {
             background-color: var(--bg-color);
             color: var(--text-color);
-            font-family: var(--font-main);
+            font-family: var(--font-body);
             margin: 0;
-            padding: 0;
-            overflow-x: hidden; /* 防止横向滚动 */
-        }
-
-        /* 核心容器 - 居中 */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-
-        /* Header - 恒星 */
-        header {
-            height: 80vh; /* 占据首屏 80% */
+            height: 100vh;
+            overflow: hidden; /* 锁死滚动，做成单屏应用 */
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            transition: background-color 0.5s ease;
+        }
+
+        /* 核心恒星 QUASAR X */
+        .core-star {
+            z-index: 10;
             text-align: center;
-            position: relative;
+            cursor: crosshair; /* 准星光标，增加代号感 */
+            mix-blend-mode: difference; /* 混合模式，制造反色感 */
         }
 
-        .logo {
-            font-size: clamp(3rem, 10vw, 8rem); /* 响应式巨大字体 */
-            font-weight: bold;
-            letter-spacing: 1rem;
+        .core-title {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 700;
+            letter-spacing: -0.05em; /* 紧凑排版，像A24海报 */
             text-transform: uppercase;
-            border: 2px solid var(--text-color);
-            padding: 20px 40px;
-            transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+            transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
-        .logo:hover {
+        .core-subtitle {
+            font-size: 0.8rem;
+            letter-spacing: 0.5em;
+            margin-top: 10px;
+            opacity: 0.5;
+            text-transform: uppercase;
+        }
+
+        /* 悬停恒星时的交互：放大并模糊 */
+        .core-star:hover .core-title {
+            transform: scale(1.1);
+            filter: blur(2px); /* 像黑洞视界模糊 */
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+        }
+
+        /* 行星轨道容器 - 默认隐藏，悬停恒星时显示 */
+        .orbit-system {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80vw;
+            height: 60vh;
+            pointer-events: none; /* 默认不挡鼠标 */
+            opacity: 0;
+            transition: opacity 0.6s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* 当鼠标放在恒星或轨道区域时，显示行星 */
+        body:has(.core-star:hover) .orbit-system,
+        .orbit-system:hover {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* 行星布局 - 环绕式 (用Grid模拟) */
+        .planet-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem 10rem; /* 巨大的间距 */
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .planet-item {
+            position: relative;
+            padding: 20px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        /* 悬停行星时的反相效果 */
+        .planet-item:hover {
             background-color: var(--text-color);
             color: var(--bg-color);
-            transform: scale(1.05); /* 微视差放大 */
-            box-shadow: 0 0 50px rgba(255, 255, 255, 0.2);
+            border-color: transparent;
         }
 
-        .manifesto {
-            margin-top: 40px;
-            font-size: 0.9rem;
-            opacity: 0.7;
-            letter-spacing: 0.2rem;
+        /* 代号 (显示状态) */
+        .code-name {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: block;
+            transition: transform 0.3s ease;
         }
 
-        /* 行星系列表 - Grid */
-        .system-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            border-top: 1px solid #333;
-        }
-
-        .planet {
-            border-bottom: 1px solid #333;
-            padding: 40px 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            cursor: pointer; /* 目前是死链接，但手势要是链接 */
-            transition: background-color 0.3s;
-            position: relative;
-        }
-
-        .planet:hover {
-            background-color: #111;
-        }
-
-        .planet:hover .planet-name {
-            color: var(--accent-color); /* 悬停变红 */
-            padding-left: 20px; /* 细微位移 */
-        }
-
-        .planet-code {
-            font-size: 0.8rem;
-            color: #555;
-            width: 100px;
-        }
-
-        .planet-name {
-            font-size: clamp(1.5rem, 4vw, 3rem);
-            font-weight: bold;
-            text-transform: uppercase;
-            flex-grow: 1;
-            transition: all 0.3s ease;
-        }
-
-        .planet-desc {
-            font-size: 0.8rem;
-            color: #666;
-            text-align: right;
-            max-width: 200px;
-            display: none; /* 手机端隐藏描述 */
-        }
-
-        @media (min-width: 768px) {
-            .planet-desc {
-                display: block;
-            }
-        }
-
-        /* 底部 */
-        footer {
-            text-align: center;
-            padding: 100px 0;
-            font-size: 0.7rem;
-            color: #444;
-            text-transform: uppercase;
-        }
-
-    </style>
-</head>
-<body>
-
-    <div class="container">
-        <header>
-            <div class="logo">QUASAR X</div>
-            <div class="manifesto">Cultiver l'aliénation | Protocol v1.0</div>
-        </header>
-
-        <div class="system-grid">
-            
-            <div class="planet">
-                <div class="planet-code">01 // VISUAL</div>
-                <div class="planet-name">CORTEXA</div>
-                <div class="planet-desc">Cinematography & Visual Cortex<br>(Films / Clips)</div>
-            </div>
-
-            <div class="planet">
-                <div class="planet-code">02 // FIELD</div>
-                <div class="planet-name">VANTALITH</div>
-                <div class="planet-desc">Absorption & Observation<br>(Field Research)</div>
-            </div>
-
-            <div class="planet">
-                <div class="planet-code">03 // SCRIPT</div>
-                <div class="planet-name">NIHILITH</div>
-                <div class="planet-desc">Structure from Void<br>(Scripts / Screenplay)</div>
-            </div>
-
-            <div class="planet">
-                <div class="planet-code">04 // SONIC</div>
-                <div class="planet-name">LUCIFERIN</div>
-                <div class="planet-desc">Bioluminescence in Dark<br>(Music / Sound)</div>
-            </div>
-
-            <div class="planet">
-                <div class="planet-code">05 // SPACE</div>
-                <div class="planet-name">ASCENDRE</div>
-                <div class="planet-desc">Ascension & Curation<br>(Exhibitions)</div>
-            </div>
-
-            <div class="planet">
-                <div class="planet-code">06 // ARCHIVE</div>
-                <div class="planet-name">XEROLITH</div>
-                <div class="planet-desc">Dry Copy & Reports<br>(Essays / Blog)</div>
-            </div>
-
-        </div>
-
-        <footer>
-            &copy; 2026 QUASAR LAB. All Systems Operational.
-        </footer>
-    </div>
-
-</body>
-</html>
+        /*
