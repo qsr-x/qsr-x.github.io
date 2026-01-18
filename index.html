@@ -119,4 +119,97 @@
             transition: transform 0.3s ease;
         }
 
-        /*
+        /* 真实含义 (隐藏状态) */
+        .real-name {
+            position: absolute;
+            top: 50%;
+            left: 20px;
+            transform: translateY(150%); /* 默认沉在下面 */
+            font-family: var(--font-body);
+            font-size: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: transform 0.3s ease;
+        }
+
+        /* 悬停时的文字置换魔术 */
+        .planet-item:hover .code-name {
+            transform: translateY(-150%); /* 代号飞走 */
+        }
+        
+        .planet-item:hover .real-name {
+            transform: translateY(-50%); /* 真名浮现 */
+        }
+
+        /* 版权信息 - 固定底部 */
+        footer {
+            position: fixed;
+            bottom: 20px;
+            font-size: 0.6rem;
+            opacity: 0.3;
+            letter-spacing: 0.1em;
+            font-family: var(--font-body);
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .planet-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .core-title {
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="core-star">
+        <div class="core-title">QUASAR X</div>
+        <div class="core-subtitle">Protocol Initialized</div>
+    </div>
+
+    <div class="orbit-system">
+        <div class="planet-grid">
+            
+            <div class="planet-item">
+                <span class="code-name">CORTEXA</span>
+                <span class="real-name">Films / Visuals</span>
+            </div>
+
+            <div class="planet-item">
+                <span class="code-name">VANTALITH</span>
+                <span class="real-name">Field Research</span>
+            </div>
+
+            <div class="planet-item">
+                <span class="code-name">NIHILITH</span>
+                <span class="real-name">Screenplays</span>
+            </div>
+
+            <div class="planet-item">
+                <span class="code-name">LUCIFERIN</span>
+                <span class="real-name">Sound / Sonic</span>
+            </div>
+
+            <div class="planet-item">
+                <span class="code-name">ASCENDRE</span>
+                <span class="real-name">Exhibitions</span>
+            </div>
+
+            <div class="planet-item">
+                <span class="code-name">XEROLITH</span>
+                <span class="real-name">Archives / Blog</span>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2026 QUASAR X LAB. ALL RIGHTS RESERVED.
+    </footer>
+
+</body>
+</html>
